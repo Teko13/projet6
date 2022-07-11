@@ -1,0 +1,21 @@
+.toggle-container {
+    cursor: pointer;
+}
+.toggle-bar {
+    width: 3rem;
+    height: 1rem;
+    border-radius: 1rem;
+    background-color: rgb(197, 197, 197);
+    display: flex;
+    align-items: center;
+}
+.toggle-elipse {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 1.5rem;
+    background:rgb(255, 255, 255);
+    transition: all 400ms ease;
+}
+.toggle-elipse.dark {
+    transform: translateX(1.5rem);
+}

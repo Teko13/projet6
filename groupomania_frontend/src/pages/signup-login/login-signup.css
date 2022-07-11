@@ -1,0 +1,58 @@
+.input-container {
+    margin: 4rem auto;
+    width: 40%;
+    padding: 5rem;
+    border: 1px solid var(--color-secondary);
+    border-radius: 1rem;
+}
+.input-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    transition: all 400ms ease;
+}
+.input-content.dark {
+    color: white !important;
+}
+
+.input-content > h1 {
+    margin: 0 auto;
+}
+label {
+    font-size: .8rem;
+}
+.email-content, .password-content {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+.email-input, .password-input {
+    border: 1px solid var(--color-tertiary);
+    border-radius: .5rem;
+    height: 1rem;
+    padding: 1rem;
+    font-size: 1rem;
+}
+.submit-btn {
+    width: 100%;
+    border-radius: 1rem;
+    font-size: 1rem;
+    background: var(--color-primary);
+    color: white;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 400ms ease;
+}
+.submit-btn:hover {
+    background-color: var(--color-primary-variant);
+}
+.loin-signup-body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.home-link {
+    width: 100%;
+}

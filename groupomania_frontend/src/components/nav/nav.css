@@ -1,0 +1,30 @@
+.nav {
+    display: flex;
+    gap: 1.5rem;
+}
+.nav.dark a {
+    color: white !important;
+}
+@keyframes activebar {
+    0% {width: 0;}
+    100% {width: 100%;}
+}
+
+.active {
+    position: relative;
+}
+
+.active::after {
+    content: "";
+    background-color: var(--color-primary);
+    width: 0;
+    height: 3px;
+    position: absolute;
+    border-radius: 10px;
+    left: 50%;
+    bottom: -3px;
+    transform: translateX(-50%);
+    animation: 600ms ease-out forwards;
+    animation-name: activebar;
+    animation-direction: center;
+}
