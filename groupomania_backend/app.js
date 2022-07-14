@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
+const postRouter = require('./routes/posts-routes')
 const userRoutes = require("./routes/users-routes")
 
 // ==============DB connexion==================
@@ -23,5 +24,6 @@ app.use((req, res, next) => {
 });
 app.use(express.json());
 app.use('/api/auth', userRoutes)
+app.use('/api/posts', postRouter)
 
 module.exports = app;
