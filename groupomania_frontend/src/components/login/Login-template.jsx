@@ -20,7 +20,7 @@ const LoginTemplate = () => {
             }
         })
             .then((res) => {
-                const userData = [res.data.userId, res.data.token];
+                const userData = [res.data.userId, email, res.data.token];
                 sessionStorage.setItem('userData', JSON.stringify(userData));
                 navigate('/home')
             })

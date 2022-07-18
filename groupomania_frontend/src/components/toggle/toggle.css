@@ -1,5 +1,12 @@
 .toggle-container {
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.them-icon {
+    color: white;
+    font-size: 1.3rem;
 }
 .toggle-bar {
     width: 3rem;
