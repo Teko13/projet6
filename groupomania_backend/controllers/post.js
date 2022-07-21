@@ -75,4 +75,78 @@ exports.deletepost = (req, res, next) => {
         .catch(error => res.status(500).json({ error }))
 }
 
-exports.postReviews = (req, res, next) => { }
+exports.postReviews = (req, res, next) => {
+    Post.findOne({ _id: req.body.postId })
+        .then(post => {
+            const userLiked = post.userLiked;
+            const userDisliked = post.userDisliked;
+            const checkUserLike = userLiked.find(usrId => req.body.userId === usrId);
+            const checkUserDislike = userDisliked.find(userId => req.body.userId === userId);
+
+            switch (req.body.like) {
+                case 1:
+                    try {
+                        if (!checkUserLike && !userDisliked) {
+                            userLiked.push(req.body.userId);
+                            Post.updateOne({ _id: req.body.postId }, {
+                                likes: post.likes += 1,
+                                userLiked: userLiked
+                            })
+                                .then(() => res.status(200).json({ message: "post liker" }))
+                                .catch(error => { throw error })
+                        }
+                        else {
+                            throw "l'utilisateur a deja liker ou disliker le post"
+                        }
+                    } catch (error) {
+                        res.status(500).json({ error })
+                    }
+
+                    break;
+
+                case -1: try {
+                    if (!checkUserDislike && !checkUserLike) {
+                        userDisliked.push(req.body.userId);
+                        Post.updateOne({ _id: req.body.postId }, {
+                            dislikes: post.dislikes += 1,
+                            userDisliked: userDisliked
+                        })
+                            .then(() => res.status(200).json({ message: "post disliker" }))
+                            .catch(error => { throw error })
+                    }
+                } catch (error) {
+                    res.status(500).json({ error })
+                }
+                    break;
+
+                case 0: try {
+                    if (checkUserLike) {
+                        const index = userLiked.findIndex(userId => userId === req.body.userId);
+                        userLiked.splice(index, 1)
+                        Post.updateOne({ _id: req.body.postId }, {
+                            likes: post.likes -= 1,
+                            userLiked: userLiked
+                        })
+                            .then(() => res.status(200).json({ message: 'like annuler' }))
+                            .catch(error => { throw error })
+                    }
+                    else if (checkUserDislike) {
+                        const index = userDisliked.findIndex(userId => userId === req.body.userId);
+                        userDisliked.splice(index, 1);
+                        Post.updateOne({ _id: req.body.postId }, {
+                            dislikes: post.dislikes -= 1,
+                            userDisliked: userDisliked
+                        })
+                            .then(() => res.status(200).json({ message: 'dislike annuler' }))
+                            .catch(error => { throw error })
+                    }
+                } catch (error) {
+                    res.status(500).json({ error })
+                }
+
+                default:
+                    break;
+            }
+        })
+        .catch(error => res.status(500).json({ error }))
+}
