@@ -175,3 +175,26 @@
     background: red;
     border-radius: .3rem;
 }
+.edit-post .btn {
+    cursor: pointer;
+    padding: .7rem;
+    border: 1px transparent solid;
+    background: transparent;
+    border-radius: .5rem;
+    transition: all 400ms ease;
+}
+.edit-post .btn.dark {
+    color: wheat;
+}
+.edit-post .change-post {
+    background-color: rgb(0, 149, 45);
+    transition: all 400ms ease;
+}
+.edit-post .delete-post {
+    background-color: red;
+    transition: all 400ms ease;
+}
+.edit-post .btn:hover {
+    background-color: transparent;
+    border-color: var(--color-primary);
+}
