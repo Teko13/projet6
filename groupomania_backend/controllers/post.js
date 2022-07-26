@@ -25,16 +25,14 @@ exports.createPost = (req, res, next) => {
             .catch(error => { res.status(401).json({ error }) })
     }
     else {
-        const postReceived = JSON.parse(req.body.post);
         const post = new Post({
-            ...postReceived,
+            ...req.body,
             imgUrl: "",
             likes: 0,
             dislikes: 0,
             userLiked: [],
             userDisliked: []
         });
-        console.log(post);
         post.save()
             .then(() => { res.status(201).json({ message: 'post ajouter' }) })
             .catch(error => { res.status(401).json({ error }) })
@@ -51,7 +49,7 @@ exports.updatepost = (req, res, next) => {
     console.log('mis a jour post');
     if (req.file) {
         const postReceived = JSON.parse(req.body.post)
-        Post.updateOne({ _id: req.params.id }, {
+        Post.updateOne({ _id: postReceived.postId }, {
             ...postReceived,
             imgUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         })
@@ -59,9 +57,8 @@ exports.updatepost = (req, res, next) => {
             .catch(error => { res.status(401).json({ error }) })
     }
     else {
-        const postReceived = JSON.parse(req.body.post);
-        Post.updateOne({ _id: req.params.id }, {
-            ...postReceived
+        Post.updateOne({ _id: req.body.postId }, {
+            ...req.body
         })
             .then(() => { res.status(200).json({ message: 'post modifier' }) })
             .catch(error => { res.status(401).json({ error }) })
@@ -70,12 +67,13 @@ exports.updatepost = (req, res, next) => {
 
 exports.deletepost = (req, res, next) => {
     console.log("sup");
-    Post.deleteOne({ _id: req.params.id })
+    Post.deleteOne({ _id: req.body.post })
         .then(() => res.status(200).json({ message: "poste supprimer" }))
         .catch(error => res.status(500).json({ error }))
 }
 
 exports.postReviews = (req, res, next) => {
+    console.log(req.body.like);
     Post.findOne({ _id: req.body.postId })
         .then(post => {
             const userLiked = post.userLiked;
@@ -86,7 +84,8 @@ exports.postReviews = (req, res, next) => {
             switch (req.body.like) {
                 case 1:
                     try {
-                        if (!checkUserLike && !userDisliked) {
+                        if (!checkUserLike && !checkUserDislike) {
+                            console.log('ajout like');
                             userLiked.push(req.body.userId);
                             Post.updateOne({ _id: req.body.postId }, {
                                 likes: post.likes += 1,
@@ -114,12 +113,16 @@ exports.postReviews = (req, res, next) => {
                             .then(() => res.status(200).json({ message: "post disliker" }))
                             .catch(error => { throw error })
                     }
+                    else {
+                        throw 'non autoriser'
+                    }
                 } catch (error) {
                     res.status(500).json({ error })
                 }
                     break;
 
                 case 0: try {
+                    console.log('annulation');
                     if (checkUserLike) {
                         const index = userLiked.findIndex(userId => userId === req.body.userId);
                         userLiked.splice(index, 1)
@@ -143,6 +146,7 @@ exports.postReviews = (req, res, next) => {
                 } catch (error) {
                     res.status(500).json({ error })
                 }
+                    break;
 
                 default:
                     break;
