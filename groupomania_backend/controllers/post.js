@@ -45,6 +45,13 @@ exports.post = (req, res, next) => {
         .catch(error => { res.status(404).json({ error }) })
 }
 
+exports.authorPosts = (req, res, next) => {
+    console.log("posts d'auteur");
+    Post.find({ author: req.params.author })
+        .then(posts => (res.status(200).json(posts)))
+        .catch(() => res.status(500))
+}
+
 exports.updatepost = (req, res, next) => {
     console.log('mis a jour post');
     if (req.file) {
