@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom/client';
 import Login from './pages/signup-login/Login';
 import Signup from './pages/signup-login/Signup';
 import Home from './pages/home/Home';
+import Profil from './pages/profil/Profil';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,6 +15,7 @@ root.render(
       <Route path='/login/' element={<Login />} />
       <Route path='*' element={<Signup />} />
       <Route path="/home" element={<Home />} />
+      <Route path="/profil" element={<Profil />} />
     </Routes>
   </BrowserRouter>
 );

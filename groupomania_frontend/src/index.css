@@ -32,6 +32,9 @@ img {
 .container.dark {
     background: var(--color-bg-dark);
 }
+.container.dark {
+    color: white;
+}
 
 body {
     font-family: 'Lato', sans-serif;
