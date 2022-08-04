@@ -7,7 +7,7 @@ import Post from '../post/Post';
 
 const HomeTemplate = () => {
     const userData = JSON.parse(sessionStorage.getItem('userData'));
-    const [author, setAuthor] = useState(userData[1]);
+    const author = userData[1]
     const [msg, setMsg] = useState("")
     const [file, setFile] = useState(null)
     const [postData, setPostData] = useState([])
@@ -15,45 +15,31 @@ const HomeTemplate = () => {
     const [updatePst, setUpdatePst] = useState('no')
     const { theme } = useContext(ThemeContext)
     useEffect(() => {
-        const fetchData = async () => {
-            const results = await axios('http://localhost:4200/api/posts/');
-            setPostData(results.data.posts);
-        }
-        fetchData();
+        console.log();
+        axios('http://localhost:4200/api/posts/')
+            .then(res =>
+                setPostData(res.data.posts)
+            )
+            .catch(error => console.log(error))
     }, [activeForm])
 
     function postSender(e) {
         e.preventDefault();
-        let post = null;
-        const formDatas = new FormData();
-        formDatas.append("image", file)
-        formDatas.append("post", JSON.stringify({
+
+        const post = new FormData();
+        post.append("image", file)
+        post.append("post", JSON.stringify({
             author: author,
             postMsg: msg,
-            userId: userData[0],
-            postId: updatePst !== 'no' && updatePst || null
-        }));
-        if (file === null) {
-            post = {
-                author: author,
-                postMsg: msg,
-                userId: userData[0],
-                postId: updatePst !== 'no' && updatePst || null
-            }
-        } else {
-            post = formDatas;
-        }
+            userId: userData[0]
+        }))
         axios({
             method: `${updatePst === 'no' ? 'post' : 'put'}`,
-            url: `http://localhost:4200/api/posts/${userData[0]}`,
-            headers: {
-                authorization: userData[2]
-            },
+            url: `http://localhost:4200/api/posts/${updatePst === 'no' ? '' : updatePst}`,
             data: post
         })
             .then(res => {
                 setActiveForm("disable");
-                setAuthor(userData[1])
                 setMsg('')
                 setFile(null)
                 setUpdatePst('no')
@@ -75,7 +61,7 @@ const HomeTemplate = () => {
                 <div className={theme === "dark" ? "posts-list dark" : "posts-list"}>
                     {
                         postData.map((post, index) => (
-                            <Post key={index} post={post} setAuthor={setAuthor} setUpdatePst={setUpdatePst} actform={setActiveForm} setMsg={setMsg} />
+                            <Post key={index} post={post} setUpdatePst={setUpdatePst} actform={setActiveForm} setMsg={setMsg} />
                         ))
 
                     }
