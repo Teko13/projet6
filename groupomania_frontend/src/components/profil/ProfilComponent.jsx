@@ -35,7 +35,7 @@ const ProfilComponent = () => {
             <Header currentPage='profil' />
             <div className="user-profil-content">
                 <div className="user-info">
-                    <div className="user-image"><FaUserAlt /></div>
+                    <div className="user-img"><FaUserAlt /></div>
                     <h2>{userData[1]}</h2>
                     <small>Derniere connexion: {userData[3]} </small>
                 </div>

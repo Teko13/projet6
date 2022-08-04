@@ -29,7 +29,8 @@ const SignupTemplate = () => {
                     }
                 })
                     .then((res) => {
-                        const userData = [res.data.userId, email, res.data.token];
+                        const now = new Date();
+                        const userData = [res.data.userId, email, res.data.token, now];
                         sessionStorage.setItem('userData', JSON.stringify(userData));
                         navigate('/home')
                     })
