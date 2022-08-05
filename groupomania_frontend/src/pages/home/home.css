@@ -175,3 +175,14 @@
     background: red;
     border-radius: .3rem;
 }
+.post-btn {
+    color: white;
+    padding: 1rem;
+    border-radius: .4rem;
+}
+.del-btn {
+    background: red;
+}
+.edit-btn {
+    background-color: rgb(77, 77, 255);
+}

@@ -1,23 +1,15 @@
 const jwt = require('jsonwebtoken');
 module.exports = (req, res, next) => {
-    const token = req.headers.authorization
-    const decodToken = jwt.verify(token, 'TOKEN_KEY');
-    const userId = decodToken.userId;
-    console.log(userId);
-
-    // Verificatin de requete sans formData
-
-    if (req.body.userId && req.body.userId === userId) {
-        next();
-    }
-
-    // Verification de requete avec formData
-
-    else {
-        const senderId = req.originalUrl.split('posts/')[1];
-        if (senderId === userId) {
-            next();
+    try {
+        const token = req.headers.authorization
+        const decodToken = jwt.verify(token, 'TOKEN_KEY');
+        const userId = decodToken.userId;
+        req.auth = {
+            userId: userId
         }
-        else { res.status(401) }
+        next();
+    } catch (error) {
+        console.log('non authoriser');
+        res.status(401).json({ error })
     }
 }

@@ -54,19 +54,15 @@ const ProfilComponent = () => {
                                 <button onClick={() => {
                                     axios({
                                         method: 'delete',
-                                        url: `http://localhost:4200/api/posts/`,
                                         headers: {
                                             authorization: userData[2]
                                         },
-                                        data: {
-                                            userId: userData[0],
-                                            post: post._id
-                                        }
+                                        url: `http://localhost:4200/api/posts/${post._id}`
                                     })
                                         .then((res) => {
-                                            console.log(res.data.message);
                                             setRefetch(Date.now())
                                         })
+                                        .catch(error => console.log(error))
                                 }}>Supprimer</button>
                             </div>
                         ))}

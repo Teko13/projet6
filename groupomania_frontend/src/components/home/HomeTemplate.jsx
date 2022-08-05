@@ -15,12 +15,12 @@ const HomeTemplate = () => {
     const [updatePst, setUpdatePst] = useState('no')
     const { theme } = useContext(ThemeContext)
     useEffect(() => {
-        console.log();
-        axios('http://localhost:4200/api/posts/')
-            .then(res =>
-                setPostData(res.data.posts)
-            )
-            .catch(error => console.log(error))
+        const fetch = async () => {
+            const results = await axios('http://localhost:4200/api/posts/');
+            console.log(results.data);
+            setPostData(results.data.posts)
+        }
+        fetch();
     }, [activeForm])
 
     function postSender(e) {
@@ -31,10 +31,12 @@ const HomeTemplate = () => {
         post.append("post", JSON.stringify({
             author: author,
             postMsg: msg,
-            userId: userData[0]
         }))
         axios({
             method: `${updatePst === 'no' ? 'post' : 'put'}`,
+            headers: {
+                authorization: userData[2],
+            },
             url: `http://localhost:4200/api/posts/${updatePst === 'no' ? '' : updatePst}`,
             data: post
         })
@@ -42,7 +44,8 @@ const HomeTemplate = () => {
                 setActiveForm("disable");
                 setMsg('')
                 setFile(null)
-                setUpdatePst('no')
+                setUpdatePst('no');
+                console.log(msg);
             })
             .catch(error => {
                 alert('un probleme est survenu!')
