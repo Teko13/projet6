@@ -1,4 +1,5 @@
 const express = require("express");
+require('dotenv').config();
 const mongoose = require("mongoose");
 const app = express();
 const path = require('path')
@@ -7,7 +8,7 @@ const userRoutes = require("./routes/users-routes")
 
 // ==============DB connexion==================
 
-mongoose.connect('mongodb+srv://teko_13:12126060@cluster0.xxi2c.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.xxi2c.mongodb.net/?retryWrites=true&w=majority`,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true

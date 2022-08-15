@@ -7,7 +7,7 @@ import { MdOutlineDarkMode } from 'react-icons/md'
 
 
 import "./toggle.css"
-
+// the theme switch to chose dark or light mode
 const Toggle = () => {
     const { theme, updateTheme } = useContext(ThemeContext)
     useEffect(() => {

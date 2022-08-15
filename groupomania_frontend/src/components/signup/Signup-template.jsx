@@ -9,6 +9,8 @@ const SignupTemplate = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const navigate = useNavigate();
+
+    // function called when submiting signup form
     function signupFunction(e) {
         e.preventDefault();
         axios({
@@ -36,7 +38,7 @@ const SignupTemplate = () => {
                     })
                     .catch(error => { console.log(error); })
             })
-            .catch((error) => { console.log(error); })
+            .catch((error) => { alert(`email déja inscrit ou erreur: ${error}`) })
     }
 
     const { theme } = useContext(ThemeContext)
@@ -54,7 +56,7 @@ const SignupTemplate = () => {
                             } placeholder="ex:abc@gmail.com" className="email-input" id="email" />
                         </div>
                         <div className="password-content">
-                            <label htmlFor="password">Mot de pass:</label>
+                            <label htmlFor="password">Mot de passe:</label>
                             <input type="password" value={password} onChange={
                                 (e) => { setPassword(e.target.value) }
                             } id="password" className="password-input" />

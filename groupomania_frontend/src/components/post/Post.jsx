@@ -6,7 +6,7 @@ import { BiDislike } from 'react-icons/bi';
 import { AiOutlineLike } from 'react-icons/ai';
 import axios from 'axios'
 
-const Post = ({ post, actform, setMsg, setUpdatePst }) => {
+const Post = ({ post, activeForm, setMsg, setAuthor, setUpdatePst }) => {
     const userData = JSON.parse(sessionStorage.getItem('userData'))
     const { theme } = useContext(ThemeContext)
     function setLikes(postId, like) {
@@ -40,12 +40,16 @@ const Post = ({ post, actform, setMsg, setUpdatePst }) => {
                 {post.postMsg}
             </article>
             {
-                post.userId === userData[0] ?
+                // display edit and deelete buttons if current user id is admin id or post auhor id
+                post.userId === userData[0] || userData[0] === "62dfb359ca6a00771ad4639d" ?
                     <div className="edit-post">
                         <button className='post-btn edit-btn' onClick={() => {
+                            if (userData[0] === '62dfb359ca6a00771ad4639d') {
+                                setAuthor(post.author)
+                            }
                             setUpdatePst(post._id)
                             setMsg(post.postMsg)
-                            actform('enable')
+                            activeForm('enable')
                         }} >Modifier</button>
                         <button className='post-btn del-btn' onClick={
                             () => {
@@ -57,8 +61,7 @@ const Post = ({ post, actform, setMsg, setUpdatePst }) => {
                                     url: `http://localhost:4200/api/posts/${post._id}`
                                 })
                                     .then((res) => {
-                                        console.log(res.data.message);
-                                        actform(`touch${post._id}`)
+                                        activeForm(`touch${post._id}`)
                                     })
                                     .catch(error => console.log(error))
                             }
@@ -72,11 +75,11 @@ const Post = ({ post, actform, setMsg, setUpdatePst }) => {
                     <span onClick={() => {
                         if (post.userLiked.find((userId) => (userId === userData[0]))) {
                             setLikes(post._id, 0)
-                                .then(() => { actform(Date.now()) })
+                                .then(() => { activeForm(Date.now()) })
                                 .catch((error) => { console.log(error); })
                         } else {
                             setLikes(post._id, 1)
-                                .then(() => { actform(Date.now()) })
+                                .then(() => { activeForm(Date.now()) })
                                 .catch((error) => { console.log(error); })
                         }
                     }} className="like-icon">{
@@ -89,17 +92,17 @@ const Post = ({ post, actform, setMsg, setUpdatePst }) => {
                     <span onClick={() => {
                         if (post.userDisliked.find((userId) => (userId === userData[0]))) {
                             setLikes(post._id, 0)
-                                .then(() => { actform(Date.now()) })
+                                .then(() => { activeForm(Date.now()) })
                                 .catch((error) => { console.log(error); })
                         } else {
                             setLikes(post._id, -1)
-                                .then(() => { actform(Date.now()) })
+                                .then(() => { activeForm(Date.now()) })
                                 .catch((error) => { console.log(error); })
                         }
-                    }} className="dislike-icon fill" >{
-                            post.userDisliked.find(userId => userId === userData[0]) ? <AiFillLike />
+                    }} >{
+                            post.userDisliked.find(userId => userId === userData[0]) ? <AiFillLike className='dislike-icon fill' />
                                 :
-                                <BiDislike />} </span>
+                                <BiDislike className='dislike-icon' />} </span>
                     <span className="nbr">{post.dislikes}</span>
                 </div>
             </div>

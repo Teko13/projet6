@@ -1,5 +1,7 @@
 const Post = require('../model/Post');
+const fs = require('fs');
 
+// get all posts
 exports.posts = (req, res, next) => {
     Post.find()
         .then(postsObjects => {
@@ -9,9 +11,9 @@ exports.posts = (req, res, next) => {
         .catch(error => { res.status(500).json({ error }) })
 }
 
+// creation of new post
 exports.createPost = (req, res, next) => {
     if (req.file) {
-        console.log('creation avec image');
         const postReceived = JSON.parse(req.body.post)
         const post = new Post({
             ...postReceived,
@@ -27,7 +29,6 @@ exports.createPost = (req, res, next) => {
             .catch(error => { res.status(401).json({ error }) })
     }
     else {
-        console.log("creation sans image");
         const postReceived = JSON.parse(req.body.post)
         const post = new Post({
             ...postReceived,
@@ -44,23 +45,24 @@ exports.createPost = (req, res, next) => {
     }
 }
 
+// get one post
 exports.post = (req, res, next) => {
     Post.findOne({ _id: req.params.id })
         .then(post => res.status(201).json(post))
         .catch(error => { res.status(404).json({ error }) })
 }
 
+// get current user posts
 exports.authorPosts = (req, res, next) => {
-    console.log("posts d'auteur");
     Post.find({ author: req.params.author })
         .then(posts => (res.status(200).json(posts)))
         .catch(() => res.status(500))
 }
 
+// update post function
 exports.updatepost = (req, res, next) => {
     if (req.file) {
         const postReceived = JSON.parse(req.body.post)
-        console.log(postReceived.postMsg);
         Post.updateOne({ _id: req.params.id }, {
             ...postReceived,
             imgUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
@@ -70,7 +72,6 @@ exports.updatepost = (req, res, next) => {
     }
     else {
         const postReceived = JSON.parse(req.body.post)
-        console.log('maj sans image');
         Post.updateOne({ _id: req.params.id }, {
             ...postReceived
         })
@@ -79,15 +80,22 @@ exports.updatepost = (req, res, next) => {
     }
 }
 
+// delete post
 exports.deletepost = (req, res, next) => {
-    console.log("sup");
-    Post.deleteOne({ _id: req.params.id })
-        .then(() => res.status(200).json({ message: "poste supprimer" }))
+    Post.findOne({ _id: req.params.id })
+        .then(post => {
+            const imgName = post.imgUrl.split('/images/')[1];
+            fs.unlink(`images/${imgName}`, () => {
+                Post.deleteOne({ _id: req.params.id })
+                    .then(() => res.status(200).json({ message: "poste supprimer" }))
+                    .catch(error => res.status(500).json({ error }))
+            })
+        })
         .catch(error => res.status(500).json({ error }))
 }
 
+// like and dislike function
 exports.postReviews = (req, res, next) => {
-    console.log(req.body.like);
     Post.findOne({ _id: req.body.postId })
         .then(post => {
             const userLiked = post.userLiked;
@@ -99,7 +107,6 @@ exports.postReviews = (req, res, next) => {
                 case 1:
                     try {
                         if (!checkUserLike && !checkUserDislike) {
-                            console.log('ajout like');
                             userLiked.push(req.auth.userId);
                             Post.updateOne({ _id: req.body.postId }, {
                                 likes: post.likes += 1,
@@ -136,7 +143,6 @@ exports.postReviews = (req, res, next) => {
                     break;
 
                 case 0: try {
-                    console.log('annulation');
                     if (checkUserLike) {
                         const index = userLiked.findIndex(userId => userId === req.auth.userId);
                         userLiked.splice(index, 1)

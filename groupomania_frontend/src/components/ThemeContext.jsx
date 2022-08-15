@@ -1,4 +1,6 @@
 import React, { createContext, useState } from "react";
+
+// creation of context to manipulate website theme
 export const ThemeContext = createContext();
 const ThemeContextProvider = (props) => {
 

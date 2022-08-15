@@ -14,11 +14,13 @@ const ProfilComponent = () => {
         const fetchData = async () => {
             const results = await axios(`http://localhost:4200/api/posts/${userData[1]}/`);
             setPostsData(results.data);
-            if (results.data.lenght > 1) {
+            if (results.data.length > 1) {
+                console.log("plus de 2 posts");
                 setTotalLikes(results.data.reduce((acc, x) => (acc.likes + x.likes)))
                 setTotalDislikes(results.data.reduce((acc, x) => (acc.dislikes + x.dislikes)))
             }
-            else if (results.data.lenght === 1) {
+            else if (results.data.posts.lenght === 1) {
+                console.log("1 post");
                 setTotalDislikes(results.data[0].dislikes)
                 setTotalLikes(results.data[0].likes)
             }

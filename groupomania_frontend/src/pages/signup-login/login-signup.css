@@ -56,3 +56,10 @@ label {
 .home-link {
     width: 100%;
 }
+
+@media screen and (max-width: 760px) {
+    .input-container {
+        width: 80%;
+        padding: 2rem;
+    }
+}

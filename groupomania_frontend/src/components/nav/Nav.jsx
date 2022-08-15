@@ -10,6 +10,7 @@ const Nav = ({ page }) => {
     return (
         <div>
             {
+                // prop "page" is set to know the current page to adapt the navbar content
                 page === 'login-signup' &&
                 (<div className={theme === "dark" ? "nav dark" : "nav"}>
                     <NavLink to="/" className={(nav) => (nav.isActive ? "active" : "")}>Inscription</NavLink>

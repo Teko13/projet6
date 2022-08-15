@@ -1,4 +1,5 @@
 const GUser = require('../model/GUser')
+require('dotenv').config();
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
@@ -30,7 +31,7 @@ exports.login = (req, res, next) => {
                     res.status(200).json({
                         userId: user._id,
                         token: jwt.sign({ userId: user._id },
-                            'TOKEN_KEY',
+                            process.env.TOKEN_KEY,
                             { expiresIn: "24h" })
                     })
                 })

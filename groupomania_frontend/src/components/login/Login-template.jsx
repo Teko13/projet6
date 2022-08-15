@@ -8,7 +8,9 @@ import { useNavigate } from 'react-router-dom';
 const LoginTemplate = () => {
     const [email, setEmail] = useState('');
     const navigate = useNavigate();
-    const [password, setPassword] = useState('')
+    const [password, setPassword] = useState('');
+
+    // function called when submiting login form
     function loginFunction(e) {
         e.preventDefault();
         axios({
@@ -41,7 +43,7 @@ const LoginTemplate = () => {
                             } placeholder="ex:abc@gmail.com" className="email-input" id="email" />
                         </div>
                         <div className="password-content">
-                            <label htmlFor="password">Mot de pass:</label>
+                            <label htmlFor="password">Mot de passe:</label>
                             <input type="password" value={password} onChange={(e) => { setPassword(e.target.value) }
                             } id="password" className="password-input" />
                         </div>

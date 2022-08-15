@@ -4,25 +4,30 @@ import Footer from '../footer/Footer';
 import { ThemeContext } from '../ThemeContext';
 import axios from 'axios'
 import Post from '../post/Post';
-
+// home page component
 const HomeTemplate = () => {
     const userData = JSON.parse(sessionStorage.getItem('userData'));
-    const author = userData[1]
-    const [msg, setMsg] = useState("")
-    const [file, setFile] = useState(null)
-    const [postData, setPostData] = useState([])
-    const [activeForm, setActiveForm] = useState("disable")
-    const [updatePst, setUpdatePst] = useState('no')
-    const { theme } = useContext(ThemeContext)
+    const [author, setAuthor] = useState(userData[1]);
+    const [msg, setMsg] = useState("");
+    const [file, setFile] = useState(null);
+    const [postData, setPostData] = useState([]);
+
+    // activeForm state control the display of the posts form
+    const [activeForm, setActiveForm] = useState("disable");
+
+    const [updatePst, setUpdatePst] = useState('no');
+    const { theme } = useContext(ThemeContext);
+
+    // get all posts data from backend
     useEffect(() => {
         const fetch = async () => {
             const results = await axios('http://localhost:4200/api/posts/');
-            console.log(results.data);
             setPostData(results.data.posts)
         }
         fetch();
     }, [activeForm])
 
+    // function called when post form submiting
     function postSender(e) {
         e.preventDefault();
 
@@ -45,7 +50,6 @@ const HomeTemplate = () => {
                 setMsg('')
                 setFile(null)
                 setUpdatePst('no');
-                console.log(msg);
             })
             .catch(error => {
                 alert('un probleme est survenu!')
@@ -64,7 +68,12 @@ const HomeTemplate = () => {
                 <div className={theme === "dark" ? "posts-list dark" : "posts-list"}>
                     {
                         postData.map((post, index) => (
-                            <Post key={index} post={post} setUpdatePst={setUpdatePst} actform={setActiveForm} setMsg={setMsg} />
+                            <Post key={index}
+                                post={post}
+                                setAuthor={setAuthor}
+                                setUpdatePst={setUpdatePst}
+                                activeForm={setActiveForm}
+                                setMsg={setMsg} />
                         ))
 
                     }
