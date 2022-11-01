@@ -41,7 +41,7 @@ const Post = ({ post, setMsg, setUpdatePst, setPostData }) => {
             </article>
             {
                 // display edit and deelete buttons if current user id is admin id or post auhor id
-                post.userId === userData[0] || userData[0] === "62dfb359ca6a00771ad4639d" ?
+                post.userId === userData[0] ?
                     <div className="edit-post">
                         <button className='post-btn update-post' onClick={() => {
                             setUpdatePst(post._id)
@@ -74,11 +74,21 @@ const Post = ({ post, setMsg, setUpdatePst, setPostData }) => {
                     <span onClick={() => {
                         if (post.userLiked.find((userId) => (userId === userData[0]))) {
                             setLikes(post._id, 0)
-                                .then(() => { activeForm(Date.now()) })
+                                .then(() => {
+                                    axios('http://localhost:4200/api/posts/')
+                                        .then(res =>
+                                            setPostData(res.data.posts)
+                                        )
+                                })
                                 .catch((error) => { console.log(error); })
                         } else {
                             setLikes(post._id, 1)
-                                .then(() => { activeForm(Date.now()) })
+                                .then(() => {
+                                    axios('http://localhost:4200/api/posts/')
+                                        .then(res =>
+                                            setPostData(res.data.posts)
+                                        )
+                                })
                                 .catch((error) => { console.log(error); })
                         }
                     }} className="like-icon">{
@@ -91,11 +101,21 @@ const Post = ({ post, setMsg, setUpdatePst, setPostData }) => {
                     <span onClick={() => {
                         if (post.userDisliked.find((userId) => (userId === userData[0]))) {
                             setLikes(post._id, 0)
-                                .then(() => { activeForm(Date.now()) })
+                                .then(() => {
+                                    axios('http://localhost:4200/api/posts/')
+                                        .then(res =>
+                                            setPostData(res.data.posts)
+                                        )
+                                })
                                 .catch((error) => { console.log(error); })
                         } else {
                             setLikes(post._id, -1)
-                                .then(() => { activeForm(Date.now()) })
+                                .then(() => {
+                                    axios('http://localhost:4200/api/posts/')
+                                        .then(res =>
+                                            setPostData(res.data.posts)
+                                        )
+                                })
                                 .catch((error) => { console.log(error); })
                         }
                     }} >{
