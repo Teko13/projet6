@@ -5,7 +5,7 @@ import { AiFillLike } from 'react-icons/ai';
 import { AiOutlineLike } from 'react-icons/ai';
 import axios from 'axios'
 
-const Post = ({ post, actform, setMsg, setUpdatePst }) => {
+const Post = ({ post, setMsg, setUpdatePst, setPostData }) => {
     const userData = JSON.parse(sessionStorage.getItem('userData'))
     const { theme } = useContext(ThemeContext)
     return (
@@ -27,20 +27,21 @@ const Post = ({ post, actform, setMsg, setUpdatePst }) => {
             {
                 post.userId === userData[0] ?
                     <div className="edit-post">
-                        <button onClick={() => {
+                        <button className='post-btn update-post' onClick={() => {
                             setUpdatePst(post._id)
                             setMsg(post.postMsg)
-                            actform('enable')
                         }} >Modifier</button>
-                        <button onClick={
+                        <button className='post-btn delete' onClick={
                             () => {
                                 axios({
                                     method: 'delete',
                                     url: `http://localhost:4200/api/posts/${post._id}`
                                 })
                                     .then((res) => {
-                                        console.log(res.data.message);
-                                        actform(`touch${post._id}`)
+                                        axios('http://localhost:4200/api/posts/')
+                                            .then(res =>
+                                                setPostData(res.data.posts)
+                                            )
                                     })
                                     .catch(error => console.log(error))
                             }

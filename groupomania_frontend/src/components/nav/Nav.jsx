@@ -17,7 +17,6 @@ const Nav = ({ page }) => {
             {
                 page === 'online' &&
                 (<div className={theme === "dark" ? "nav dark" : "nav"}>
-                    <NavLink to="/profil">Mon Profil</NavLink>
                     <NavLink to='/login' className={(nav) => (nav.isActive ? "active" : "")} >Déconnexion</NavLink>
                 </div>)
             }
