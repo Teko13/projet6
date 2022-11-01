@@ -6,7 +6,7 @@ import { BiDislike } from 'react-icons/bi';
 import { AiOutlineLike } from 'react-icons/ai';
 import axios from 'axios'
 
-const Post = ({ post, activeForm, setMsg, setAuthor, setUpdatePst }) => {
+const Post = ({ post, setMsg, setUpdatePst, setPostData }) => {
     const userData = JSON.parse(sessionStorage.getItem('userData'))
     const { theme } = useContext(ThemeContext)
     function setLikes(postId, like) {
@@ -43,15 +43,11 @@ const Post = ({ post, activeForm, setMsg, setAuthor, setUpdatePst }) => {
                 // display edit and deelete buttons if current user id is admin id or post auhor id
                 post.userId === userData[0] || userData[0] === "62dfb359ca6a00771ad4639d" ?
                     <div className="edit-post">
-                        <button className='post-btn edit-btn' onClick={() => {
-                            if (userData[0] === '62dfb359ca6a00771ad4639d') {
-                                setAuthor(post.author)
-                            }
+                        <button className='post-btn update-post' onClick={() => {
                             setUpdatePst(post._id)
                             setMsg(post.postMsg)
-                            activeForm('enable')
                         }} >Modifier</button>
-                        <button className='post-btn del-btn' onClick={
+                        <button className='post-btn delete' onClick={
                             () => {
                                 axios({
                                     method: 'delete',
@@ -61,7 +57,10 @@ const Post = ({ post, activeForm, setMsg, setAuthor, setUpdatePst }) => {
                                     url: `http://localhost:4200/api/posts/${post._id}`
                                 })
                                     .then((res) => {
-                                        activeForm(`touch${post._id}`)
+                                        axios('http://localhost:4200/api/posts/')
+                                            .then(res =>
+                                                setPostData(res.data.posts)
+                                            )
                                     })
                                     .catch(error => console.log(error))
                             }
