@@ -1,6 +1,6 @@
 module.exports = (req, res, next) => {
     try {
-        if (!req.user.isAdmin) {
+        if (!req.header.isAdmin) {
             return res.status(401).json({ message: "Acces non autorisé" })
         }
         next();
