@@ -8,7 +8,8 @@ exports.signup = (req, res, next) => {
         .then((hash) => {
             const user = new GUser({
                 email: req.body.email,
-                password: hash
+                password: hash,
+                isAdmin: false
             });
             user.save()
                 .then(() => { res.status(201).json({ message: "utilisateur creer" }) })
@@ -29,6 +30,7 @@ exports.login = (req, res, next) => {
                         return res.status(401).json({ message: "mot de passe ou email incorrect" })
                     }
                     res.status(200).json({
+                        isAdmin: user.isAdmin,
                         userId: user._id,
                         token: jwt.sign({ userId: user._id },
                             process.env.TOKEN_KEY,

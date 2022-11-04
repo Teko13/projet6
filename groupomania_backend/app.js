@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const app = express();
 const path = require('path')
 const postRouter = require('./routes/posts-routes')
+const adminPostRouter = require('./routes/adminRoutes')
 const userRoutes = require("./routes/users-routes")
 
 // ==============DB connexion==================
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
 });
 app.use(express.json());
 app.use('/api/auth', userRoutes)
+app.use('api/admin', adminPostRouter)
 app.use('/api/posts', postRouter)
 app.use('/images', express.static(path.join(__dirname, 'images')))
 
