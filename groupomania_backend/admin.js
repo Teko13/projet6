@@ -1,9 +1,9 @@
 module.exports = (req, res, next) => {
     try {
-        if (!req.headers.isAdmin) {
+        console.log(req.isAdmin);
+        if (!(req.isAdmin === 'true')) {
             return res.status(401).json({ message: "Acces non autorisé" })
         }
-        console.log('admin valider');
         next();
     } catch (error) {
         res.status(400).json({ error });

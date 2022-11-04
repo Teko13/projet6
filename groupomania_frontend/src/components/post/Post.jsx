@@ -56,7 +56,7 @@ const Post = ({ post, setMsg, setUpdatePst, setPostData, setPostAuthor }) => {
                                         headers: {
                                             authorization: userData[2]
                                         },
-                                        url: `http://localhost:4200/api/admin/posts/${post._id}`
+                                        url: `http://localhost:4200/api/admin/${post._id}`
                                     })
                                         .then((res) => {
                                             axios({
@@ -65,7 +65,7 @@ const Post = ({ post, setMsg, setUpdatePst, setPostData, setPostAuthor }) => {
                                                     authorization: userData[2],
                                                     isAdmin: userData[4]
                                                 },
-                                                url: 'http://localhost:4200/api/admin/posts/',
+                                                url: 'http://localhost:4200/api/admin/',
                                             })
                                                 .then(res =>
                                                     setPostData(res.data.posts)

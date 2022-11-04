@@ -13,4 +13,4 @@ router.put('/:id', admin, auth, multer, postCtrl.updatepost)
 router.delete('/:id', admin, auth, postCtrl.deletepost)
 router.put('/', admin, auth, postCtrl.postReviews)
 
-module.exports = router
+module.exports = router;

@@ -17,12 +17,11 @@ const AdminPage = () => {
     const { theme } = useContext(ThemeContext)
     useEffect(() => {
         axios({
-            method: 'get',
+            isAdmin: 'true',
             headers: {
                 authorization: userData[2],
-                isAdmin: userData[4]
             },
-            url: 'http://localhost:4200/api/admin/posts/',
+            url: 'http://localhost:4200/api/admin/',
         })
             .then(res =>
                 setPostData(res.data.posts)
@@ -47,7 +46,7 @@ const AdminPage = () => {
                 authorization: userData[2],
                 isAdmin: userData[4]
             },
-            url: `http://localhost:4200/api/admin/posts/${updatePst === 'no' ? '' : updatePst}`,
+            url: `http://localhost:4200/api/admin/${updatePst === 'no' ? '' : updatePst}`,
             data: post
         })
             .then(res => {
@@ -63,7 +62,7 @@ const AdminPage = () => {
                         authorization: userData[2],
                         isAdmin: userData[4]
                     },
-                    url: 'http://localhost:4200/api/admin/posts/',
+                    url: 'http://localhost:4200/api/admin/',
                 })
                     .then(res =>
                         setPostData(res.data.posts)
