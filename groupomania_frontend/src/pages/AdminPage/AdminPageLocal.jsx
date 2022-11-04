@@ -1,14 +1,14 @@
 import React from 'react';
-import './profil.css'
-import ProfilComponent from '../../components/profil/ProfilComponent';
+import './admin.css'
 import ThemeContextProvider, { ThemeContext } from '../../components/ThemeContext';
+import AdminPage from '../../components/adminPage/AdminPage';
 
-const Profil = () => {
+const AdminPageLocal = () => {
     return (
         <ThemeContextProvider>
-            <ProfilComponent />
+            <AdminPage />
         </ThemeContextProvider>
     );
 };
 
-export default Profil;
+export default AdminPageLocal;

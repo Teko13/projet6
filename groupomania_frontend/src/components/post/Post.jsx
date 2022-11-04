@@ -6,7 +6,7 @@ import { BiDislike } from 'react-icons/bi';
 import { AiOutlineLike } from 'react-icons/ai';
 import axios from 'axios'
 
-const Post = ({ post, setMsg, setUpdatePst, setPostData }) => {
+const Post = ({ post, setMsg, setUpdatePst, setPostData, setPostAuthor }) => {
     const userData = JSON.parse(sessionStorage.getItem('userData'))
     const { theme } = useContext(ThemeContext)
     function setLikes(postId, like) {
@@ -41,28 +41,58 @@ const Post = ({ post, setMsg, setUpdatePst, setPostData }) => {
             </article>
             {
                 // display edit and deelete buttons if current user id is admin id or post auhor id
-                post.userId === userData[0] ?
+                post.userId === userData[0] || userData[4] ?
                     <div className="edit-post">
                         <button className='post-btn update-post' onClick={() => {
                             setUpdatePst(post._id)
                             setMsg(post.postMsg)
+                            setPostAuthor(post.author)
                         }} >Modifier</button>
                         <button className='post-btn delete' onClick={
                             () => {
-                                axios({
-                                    method: 'delete',
-                                    headers: {
-                                        authorization: userData[2]
-                                    },
-                                    url: `http://localhost:4200/api/posts/${post._id}`
-                                })
-                                    .then((res) => {
-                                        axios('http://localhost:4200/api/posts/')
-                                            .then(res =>
-                                                setPostData(res.data.posts)
-                                            )
+                                if (userData[4]) {
+                                    axios({
+                                        method: 'delete',
+                                        headers: {
+                                            authorization: userData[2]
+                                        },
+                                        url: `http://localhost:4200/api/admin/posts/${post._id}`
                                     })
-                                    .catch(error => console.log(error))
+                                        .then((res) => {
+                                            axios({
+                                                method: 'get',
+                                                headers: {
+                                                    authorization: userData[2],
+                                                    isAdmin: userData[4]
+                                                },
+                                                url: 'http://localhost:4200/api/admin/posts/',
+                                            })
+                                                .then(res =>
+                                                    setPostData(res.data.posts)
+                                                )
+                                                .catch((error) => {
+                                                    console.log(error);
+                                                    alert('un proble est survenu')
+                                                })
+                                        })
+                                        .catch(error => console.log(error))
+                                }
+                                else {
+                                    axios({
+                                        method: 'delete',
+                                        headers: {
+                                            authorization: userData[2]
+                                        },
+                                        url: `http://localhost:4200/api/posts/${post._id}`
+                                    })
+                                        .then((res) => {
+                                            axios('http://localhost:4200/api/posts/')
+                                                .then(res =>
+                                                    setPostData(res.data.posts)
+                                                )
+                                        })
+                                        .catch((error) => { console.log(error) })
+                                }
                             }
                         }>Supprimer</button>
                     </div>
