@@ -63,7 +63,7 @@ const AdminPage = () => {
                         authorization: userData[2],
                         isAdmin: userData[4]
                     },
-                    url: 'http://localhost:4200/admin/api/posts/',
+                    url: 'http://localhost:4200/api/admin/posts/',
                 })
                     .then(res =>
                         setPostData(res.data.posts)
