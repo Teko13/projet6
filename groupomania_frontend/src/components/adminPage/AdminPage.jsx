@@ -17,7 +17,6 @@ const AdminPage = () => {
     const { theme } = useContext(ThemeContext)
     useEffect(() => {
         axios({
-            isAdmin: 'true',
             headers: {
                 authorization: userData[2],
             },
@@ -44,7 +43,6 @@ const AdminPage = () => {
             method: `${updatePst === 'no' ? 'post' : 'put'}`,
             headers: {
                 authorization: userData[2],
-                isAdmin: userData[4]
             },
             url: `http://localhost:4200/api/admin/${updatePst === 'no' ? '' : updatePst}`,
             data: post
@@ -60,7 +58,6 @@ const AdminPage = () => {
                     method: 'get',
                     headers: {
                         authorization: userData[2],
-                        isAdmin: userData[4]
                     },
                     url: 'http://localhost:4200/api/admin/',
                 })
@@ -83,17 +80,16 @@ const AdminPage = () => {
                     <h2>{userData[1]}</h2>
                     <small>Derniere connexion: {userData[3]} </small>
                 </div>
-                <div className="form-content">
+                <div className="form-content" id='form'>
                     <form onSubmit={postSender} className={theme === "dark" ? "post-creation-form dark" : "post-creation-form"}>
-                        <div className="msg -input">
-                            <label htmlFor="author">Auteur:</label>
-                            <input className='' name="" id="author"
-                                placeholder="Votre nom" value={postAuthor} readOnly />
+                        <div className={theme === "dark" ? "author dark" : "author"}>
+                            <h4>Auteur</h4>
+                            <h5>{author}</h5>
                         </div>
                         <div className="msg">
                             <label htmlFor="post-text">Votre message:</label>
                             <textarea name="post-text" id="post-text" value={msg} onChange={(e) => { setMsg(e.target.value) }}
-                                placeholder="Votre messaege" cols="80" rows="10"></textarea>
+                                placeholder="Votre messaege" rows="10"></textarea>
                         </div>
                         <label htmlFor="img" className="img-downloder-label">Telecharger une image
                             <input className="img-downloder" type="file" files={file} onChange={(e) => { setFile(e.target.files[0]) }} accept="image/png,

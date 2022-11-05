@@ -8,6 +8,7 @@ import Post from '../post/Post';
 const HomeTemplate = () => {
     const userData = JSON.parse(sessionStorage.getItem('userData'));
     const author = userData[1]
+    const [postAuthor, setPostAuthor] = useState(author)
     const [msg, setMsg] = useState("")
     const [file, setFile] = useState(null)
     const [postData, setPostData] = useState([])
@@ -63,17 +64,16 @@ const HomeTemplate = () => {
     return (
         <div className={theme === "dark" ? "dark container" : "container"}>
             <Header currentPage='online' />
-            <div className="form-content">
+            <div className="form-content" id='form'>
                 <form onSubmit={postSender} className={theme === "dark" ? "post-creation-form dark" : "post-creation-form"}>
-                    <div className="msg -input">
-                        <label htmlFor="author">Auteur:</label>
-                        <input className='' name="" id="author"
-                            placeholder="Votre nom" value={author} readOnly />
+                    <div className={theme === "dark" ? "author dark" : "author"}>
+                        <h4>Auteur</h4>
+                        <h5>{author}</h5>
                     </div>
                     <div className="msg">
                         <label htmlFor="post-text">Votre message:</label>
                         <textarea name="post-text" id="post-text" value={msg} onChange={(e) => { setMsg(e.target.value) }}
-                            placeholder="Votre messaege" cols="80" rows="10"></textarea>
+                            placeholder="Votre messaege" rows="10"></textarea>
                     </div>
                     <label htmlFor="img" className="img-downloder-label">Telecharger une image
                         <input className="img-downloder" type="file" files={file} onChange={(e) => { setFile(e.target.files[0]) }} accept="image/png,
@@ -90,7 +90,7 @@ const HomeTemplate = () => {
                 <div className={theme === "dark" ? "posts-list dark" : "posts-list"}>
                     {
                         postData.map((post, index) => (
-                            <Post key={index} setPostData={setPostData} post={post} setUpdatePst={setUpdatePst} setMsg={setMsg} />
+                            <Post key={index} setPostData={setPostData} setPostAuthor={setPostAuthor} post={post} setUpdatePst={setUpdatePst} setMsg={setMsg} />
                         ))
 
                     }

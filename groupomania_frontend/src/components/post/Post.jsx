@@ -47,7 +47,7 @@ const Post = ({ post, setMsg, setUpdatePst, setPostData, setPostAuthor }) => {
                             setUpdatePst(post._id)
                             setMsg(post.postMsg)
                             setPostAuthor(post.author)
-                        }} >Modifier</button>
+                        }} ><a href="#form">Modifier</a></button>
                         <button className='post-btn delete' onClick={
                             () => {
                                 if (userData[4]) {
@@ -63,7 +63,6 @@ const Post = ({ post, setMsg, setUpdatePst, setPostData, setPostAuthor }) => {
                                                 method: 'get',
                                                 headers: {
                                                     authorization: userData[2],
-                                                    isAdmin: userData[4]
                                                 },
                                                 url: 'http://localhost:4200/api/admin/',
                                             })
