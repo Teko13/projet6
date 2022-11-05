@@ -1,6 +1,6 @@
 # Instructions
 
-1 Clone this ropo with 'git clone https://github.com/Teko13/project6.git'
+1 Clone this ropo with 'git clone https://github.com/Teko13/projet6.git'
 
 2 Move to groupomania_backend/ folder.
 
