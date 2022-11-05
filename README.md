@@ -1,4 +1,4 @@
-# projet6
+# Instruction
 
 1 Clone this ropo with 'git clone https://github.com/Teko13/project6.git'
 
